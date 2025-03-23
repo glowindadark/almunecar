@@ -11,20 +11,34 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as AboutImport } from './routes/about'
 import { Route as IndexImport } from './routes/index'
+import { Route as ActivitiesIndexImport } from './routes/activities/index'
+import { Route as AboutIndexImport } from './routes/about/index'
+import { Route as ActivitiesActivityIdIndexImport } from './routes/activities/$activityId/index'
 
 // Create/Update Routes
-
-const AboutRoute = AboutImport.update({
-  id: '/about',
-  path: '/about',
-  getParentRoute: () => rootRoute,
-} as any)
 
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ActivitiesIndexRoute = ActivitiesIndexImport.update({
+  id: '/activities/',
+  path: '/activities/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AboutIndexRoute = AboutIndexImport.update({
+  id: '/about/',
+  path: '/about/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ActivitiesActivityIdIndexRoute = ActivitiesActivityIdIndexImport.update({
+  id: '/activities/$activityId/',
+  path: '/activities/$activityId/',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -39,11 +53,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/about': {
-      id: '/about'
+    '/about/': {
+      id: '/about/'
       path: '/about'
       fullPath: '/about'
-      preLoaderRoute: typeof AboutImport
+      preLoaderRoute: typeof AboutIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/activities/': {
+      id: '/activities/'
+      path: '/activities'
+      fullPath: '/activities'
+      preLoaderRoute: typeof ActivitiesIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/activities/$activityId/': {
+      id: '/activities/$activityId/'
+      path: '/activities/$activityId'
+      fullPath: '/activities/$activityId'
+      preLoaderRoute: typeof ActivitiesActivityIdIndexImport
       parentRoute: typeof rootRoute
     }
   }
@@ -53,37 +81,47 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
+  '/about': typeof AboutIndexRoute
+  '/activities': typeof ActivitiesIndexRoute
+  '/activities/$activityId': typeof ActivitiesActivityIdIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
+  '/about': typeof AboutIndexRoute
+  '/activities': typeof ActivitiesIndexRoute
+  '/activities/$activityId': typeof ActivitiesActivityIdIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
+  '/about/': typeof AboutIndexRoute
+  '/activities/': typeof ActivitiesIndexRoute
+  '/activities/$activityId/': typeof ActivitiesActivityIdIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about'
+  fullPaths: '/' | '/about' | '/activities' | '/activities/$activityId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about'
-  id: '__root__' | '/' | '/about'
+  to: '/' | '/about' | '/activities' | '/activities/$activityId'
+  id: '__root__' | '/' | '/about/' | '/activities/' | '/activities/$activityId/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AboutRoute: typeof AboutRoute
+  AboutIndexRoute: typeof AboutIndexRoute
+  ActivitiesIndexRoute: typeof ActivitiesIndexRoute
+  ActivitiesActivityIdIndexRoute: typeof ActivitiesActivityIdIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AboutRoute: AboutRoute,
+  AboutIndexRoute: AboutIndexRoute,
+  ActivitiesIndexRoute: ActivitiesIndexRoute,
+  ActivitiesActivityIdIndexRoute: ActivitiesActivityIdIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -97,14 +135,22 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/about"
+        "/about/",
+        "/activities/",
+        "/activities/$activityId/"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
-    "/about": {
-      "filePath": "about.tsx"
+    "/about/": {
+      "filePath": "about/index.tsx"
+    },
+    "/activities/": {
+      "filePath": "activities/index.tsx"
+    },
+    "/activities/$activityId/": {
+      "filePath": "activities/$activityId/index.tsx"
     }
   }
 }
